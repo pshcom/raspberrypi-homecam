@@ -1,0 +1,4 @@
+flask
+opencv-python
+numpy
+# picamera2는 Raspberry Pi OS에서 apt로 설치: sudo apt install -y python3-picamera2

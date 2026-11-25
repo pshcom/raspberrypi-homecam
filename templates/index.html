@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>라즈베리파이 원격 홈캠</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; margin-top: 30px; }
+        .container { background-color: white; padding: 20px; display: inline-block; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h1 { color: #333; }
+        img { border: 2px solid #333; max-width: 100%; height: auto; border-radius: 5px; }
+        .btn { display: inline-block; padding: 12px 24px; margin-top: 15px; font-size: 16px; font-weight: bold; color: white; background-color: #e74c3c; border: none; border-radius: 5px; cursor: pointer; transition: background 0.3s; }
+        .btn:hover { background-color: #c0392b; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>CCTV 실시간 모니터링</h1>
+        <div>
+            <img src="{{ url_for('video_feed') }}" alt="실시간 스트리밍">
+        </div>
+        
+        <button class="btn" onclick="captureScene()">실시간 화면 캡처</button>
+    </div>
+
+    <script>
+        // 버튼을 누르면 실행되는 자바스크립트 함수
+        function captureScene() {
+            // Flask의 /capture 주소로 요청을 보냄 (화면 새로고침 없음)
+            fetch('/capture')
+            .then(response => response.json())
+            .then(data => {
+                if(data.status === "success") {
+                    alert("📷 캡처 완료!\n라즈베리파이에 저장되었습니다: " + data.filename);
+                } else {
+                    alert("❌ 캡처 실패: " + data.message);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert("서버 통신 오류 발생");
+            });
+        }
+    </script>
+</body>
+</html>
